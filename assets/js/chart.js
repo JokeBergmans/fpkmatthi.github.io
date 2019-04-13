@@ -1,20 +1,27 @@
 var parentFolder = window.location.href
   .split(window.location.hostname)[1]
-  .split('/')[1];
+  .split('/')[2];
 
-var discTypes = ['Dominant', 'Conscentieus', 'Stabiel', 'Invloed'];
+
+var discTypes = ['Dominant', 'Consc', 'Consciousness', 'Incluence'];
 var mbtiTypesEnergy = ['Extravert', 'Introvert'];
 var mbtiTypesAttention = ['Sensing', 'Intuition'];
 var mbtiTypesDecision = ['Thinking', 'Feeling'];
 var mbtiTypesLiving = ['Judging', 'Perceiving'];
 
-
-
-if (parentFolder === 'en-GB') {
-  discTypes = ['Dominance', 'Conscientiousness', 'Stability', 'Influence'];
+if (parentFolder === 'nl'){
+  discTypes = ['Dominant', 'Conscentieus', 'Stabiel', 'Invloed'];
   mbtiTypesEnergy = ['Extravert', 'Introvert'];
-  mbtiTypesAttention = ['Sensing', 'Intuition'];
-  mbtiTypesDecision = ['Thinking', 'Feeling'];
+  mbtiTypesAttention = ['Aanvoelen', 'Intuïtie'];
+  mbtiTypesDecision = ['Denken', 'Voelen'];
+  mbtiTypesLiving = ['Oordelen', 'Waarnemen'];
+}
+
+if (parentFolder == 'fr'){
+  discTypes = ['Dominant', 'Conscience', 'Stabilité', 'Influence'];
+  mbtiTypesEnergy = ['Extraverti', 'Introverti'];
+  mbtiTypesAttention = ['Percevoir', 'Intuition'];
+  mbtiTypesDecision = ['Penser', 'Sentir'];
   mbtiTypesLiving = ['Judging', 'Perceiving'];
 }
 

@@ -3,3 +3,5 @@ _site
 .jekyll-metadata
 assets/css/hamburger\.css\.map
 assets/css/main\.css\.map
+
+Gemfile\.lock
