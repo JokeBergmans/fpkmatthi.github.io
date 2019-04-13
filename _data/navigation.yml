@@ -1,0 +1,17 @@
+navs:
+
+- title: Home
+  url: /index.html
+
+- title: About
+  url: /about.html
+
+- title: Posts
+  url: /posts/index.html
+
+- title: Links
+  url: /links.html
+
+- title: Contact
+  url: /contact.html
+

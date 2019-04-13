@@ -1,0 +1,50 @@
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+        <a class="navbar-brand text-light" href="index.html">Matthias Van De Velde</a>
+        <button class="navbar-toggler border-0 hamburger hamburger--spring" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <!-- <span class="navbar-toggler-icon"></span> -->
+            <!-- <i class="fas fa-bars fa-lg"></i> -->
+            <span class="hamburger-box">
+                <span class="hamburger-inner"></span>
+            </span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                {% for item in site.data.navigation.navs %}
+                    {% if page.lang != 'en' %}
+                        
+                    {% endif %}
+                    {% if page.title == item.title %}
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{ item.url }}">{{ item.title }}</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ item.url }}">{{ item.title }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                <!-- <li class="nav-item active">
+                    <a class="nav-link" href="index.html">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="italent.html">iTalent</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="projects.html">Projects</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="links.html">Links</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.html">Contact</a>
+                </li> -->
+            </ul>
+        </div>
+    </nav>
+</header>

@@ -1,0 +1,39 @@
+<footer class="container-fluid text-center text-white mt-4 pt-4 pb-3">
+    <p>&copy; Matthias Van De Velde 2018</p>
+    <a href="https://github.com/fpkmatthi" alt="link to github account">
+        <i class="fa fa-github fa-2x" aria-hidden="true"></i>
+    </a>
+    <a href="contact.html" alt="link to contact page">
+        <i class="fa fa-envelope fa-2x" aria-hidden="true"></i>
+    </a>
+    <a href="https://www.linkedin.com/in/matthias-van-de-velde-063171163/" alt="link to LinkedIn account">
+        <i class="fa fa-linkedin-square fa-2x" aria-hidden="true"></i>
+    </a>
+
+    {% assign duplicate = nil %}
+    {% for otherpage in site.pages %}
+        {% if otherpage.lang != page.lang and otherpage.lang != duplicate.lang and otherpage.i18n-link == page.i18n-link %}
+            {% assign duplicate = otherpage %}
+            <br>
+            <!-- <p>{{otherpage.url}}</p> -->
+            <a><i class="mt-3 mb-3 fas fa-globe"></i></a>
+            <p>
+                <a href="{{ site.base-url }}{{ otherpage.url }}">
+                    {{ site.data.languages[otherpage.lang].icon }} {{site.data.languages[otherpage.lang].label}}</a>
+            </p>
+            {% assign counter = counter+1 %}
+        {% endif %}
+    {% endfor %}
+
+    {% for otherpost in site.posts %}
+    {% if otherpost.lang != page.lang and otherpost.i18n-link == page.i18n-link%}
+    <br>
+    <a><i class="mt-3 mb-3 fas fa-globe"></i></a>
+    <p>
+        <a href="{{ site.base-url }}{{ otherpost.url }}">
+            {{ site.data.languages[otherpost.lang].icon }} {{site.data.languages[otherpost.lang].label}}</a>
+    </p>
+    {% endif %}
+    {% endfor %}
+
+</footer>

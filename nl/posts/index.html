@@ -1,0 +1,46 @@
+---
+layout: default
+title: Posts
+lang: nl
+i18n-link: posts
+---
+<section>
+  <article class="container pt-3">
+    <h1>All Posts</h1>
+    {% for post in paginator.posts %}
+    <!-- {% if page.lang == post.lang %} -->
+
+    <article class="post-preview">
+      <a href="{{ post.url }}">
+        <h2 class="post-title">{{ post.title }}</h2>
+      </a>
+      <p class="post-meta">Gepost op {{ post.date | date: '%B %d, %Y' }}</p>
+    </article>
+
+    <hr>
+    <!-- {% endif %} -->
+    {% endfor %}
+
+    <!-- Pager -->
+    {% if paginator.total_pages > 1 %}
+
+    <div class="clearfix">
+
+      {% if paginator.previous_page %}
+      <a class="btn btn-primary float-left"
+        href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&larr;
+        Nieuwere<span class="d-none d-md-inline"> Posts</span></a>
+      {% endif %}
+
+      {% if paginator.next_page %}
+      <a class="btn btn-primary float-right"
+        href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">Oudere<span
+          class="d-none d-md-inline"> Posts</span> &rarr;</a>
+      {% endif %}
+
+    </div>
+
+    {% endif %}
+
+  </article>
+</section>

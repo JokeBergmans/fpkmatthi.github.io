@@ -1,0 +1,59 @@
+---
+layout: default
+---
+
+
+<div class="container mb-3">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+
+            {{ content }}
+
+            <hr>
+
+            <div class="clearfix">
+                {% assign nextPost = page.next %}
+                {% for post in site.posts %}
+                {% if nextPost.lang != page.lang and page.next.next != nil %}
+                {% assign nextPost = nextPost.next %}
+                <a class="btn btn-primary float-right"
+                    href="{{ nextPost.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip"
+                    data-placement="top" title="{{ nextPost.title }}">Next<span class="d-none d-md-inline">
+                        Post</span> &rarr;</a>
+                {% break %}
+                {% endif %}
+                {% endfor %}
+
+                {% assign previousPost = page.previous %}
+                {% for post in site.posts %}
+                {% if previousPost.lang != page.lang and page.previous.previous != nil %}
+                {% assign previousPost = previousPost.previous %}
+                <a class="btn btn-primary float-left"
+                    href="{{ previousPost.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip"
+                    data-placement="top" title="{{ previousPost.title }}">&larr; Previous<span
+                        class="d-none d-md-inline">
+                        Post</span></a>
+                {% break %}
+                {% endif %}
+                {% endfor %}
+
+                <!-- {% if page.previous.url %}
+                <a class="btn btn-primary float-left"
+                    href="{{ page.previous.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip"
+                    data-placement="top" title="{{ page.previous.title }}">&larr; Previous<span
+                        class="d-none d-md-inline">
+                        Post</span></a>
+                {% endif %}
+
+                {% if page.next.url %}
+                <a class="btn btn-primary float-right"
+                    href="{{ page.next.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip"
+                    data-placement="top" title="{{ page.next.title }}">Next<span class="d-none d-md-inline">
+                        Post</span> &rarr;</a>
+                {% endif %} -->
+
+            </div>
+
+        </div>
+    </div>
+</div>
