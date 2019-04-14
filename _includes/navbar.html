@@ -13,29 +13,22 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
+                {% if page.lang != 'en' %}
+                    {% assign lang = page.lang %}
+                {% endif %}
+
                 {% for item in site.data.navigation.navs %}
-                    {% if page.lang == 'nl' %}
-                        {% if page.title == item.title %}
-                            <li class="nav-item active">
-                                <a class="nav-link" href="/nl{{ item.url }}">{{ item.title }}</a>
-                            </li>
-                        {% else %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="/nl{{ item.url }}">{{ item.title }}</a>
-                            </li>
-                        {% endif %}
+                    {% if page.title == item.title %}
+                        <li class="nav-item active">
                     {% else %}
-                        {% if page.title == item.title %}
-                            <li class="nav-item active">
-                                <a class="nav-link" href="{{ item.url }}">{{ item.title }}</a>
-                            </li>
-                        {% else %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ item.url }}">{{ item.title }}</a>
-                            </li>
-                        {% endif %}
+                        <li class="nav-item">
                     {% endif %}
-                    
+                    {% if page.lang != 'en' %}
+                        <a class="nav-link" href="{{ lang }}{{ item.url }}">{{ item.title }}</a>
+                    {% else %}
+                        <a class="nav-link" href="{{ item.url }}">{{ item.title }}</a>
+                    {% endif %}
+                    </li>
                 {% endfor %}
             </ul>
         </div>
