@@ -3,7 +3,7 @@ var parentFolder = window.location.href
   .split('/')[2];
 
 
-var discTypes = ['Dominant', 'Consc', 'Consciousness', 'Incluence'];
+var discTypes = ['Dominant', 'Consciousness', 'Stability', 'Influence'];
 var mbtiTypesEnergy = ['Extravert', 'Introvert'];
 var mbtiTypesAttention = ['Sensing', 'Intuition'];
 var mbtiTypesDecision = ['Thinking', 'Feeling'];
