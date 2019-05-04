@@ -10,24 +10,25 @@ i18n-link: error
     padding: 0;
   }
 
-  .bgimg {
-    background-image: url('/assets/images/mountain.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 100vh;
-    width: 100%;
-  }
-
-  .warning {
-    margin-top: 40%;
-  }
+  .masthead {
+  height: 100vh;
+  min-height: 500px;
+  background-image: url('/assets/images/mountain.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 </style>
 
-<div class="row bgimg">
-  <div class="container text-center warning">
-    <h1 class="tex-lg font-weight-bold text-warning">OOPS</h1>
-    <a href="/index.html" class="btn btn-warning mt-2 mb-2 mr-2 ml-2" role="button" aria-pressed="false">Take me home <i class="fas fa-road"></i></a>
-    <a href="/contact.html" class="btn btn-warning mt-2 mb-2 mr-2 ml-2" role="button" aria-pressed="false">Contact the developer <i class="fas fa-code"></i></a>
+
+<header class="masthead">
+  <div class="container h-100">
+    <div class="row h-100 align-items-center">
+      <div class="col-12 text-center">
+        <h1 class="tex-lg font-weight-bold text-warning">OOPS</h1>
+        <a href="/index.html" class="btn btn-warning mt-2 mb-2 mr-2 ml-2" role="button" aria-pressed="false">Take me home <i class="fas fa-road"></i></a>
+        <a href="/contact.html" class="btn btn-warning mt-2 mb-2 mr-2 ml-2" role="button" aria-pressed="false">Contact the developer <i class="fas fa-code"></i></a>
+      </div>
+    </div>
   </div>
-</div>
+</header>
