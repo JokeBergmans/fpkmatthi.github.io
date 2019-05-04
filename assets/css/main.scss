@@ -206,6 +206,12 @@ $hamburger-types: (spring) !default;
 }
 
 body {
+  pre code {
+    background-color: #eee;
+    border: 1px solid #999;
+    display: block;
+    padding: 20px;
+  }
   header {
     .navbar {
       -webkit-box-shadow: 2px 5px 2px -2px black;

@@ -113,6 +113,13 @@
   transform: translate3d(0, 10px, 0) rotate(-45deg);
 }
 
+body pre code {
+  background-color: #eee;
+  border: 1px solid #999;
+  display: block;
+  padding: 20px;
+}
+
 body header .navbar {
   -webkit-box-shadow: 2px 5px 2px -2px black;
   box-shadow: 2px 5px 2px -2px black;
