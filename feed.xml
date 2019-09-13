@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.6">Jekyll</generator><link href="https://fpkmatthi.github.io//feed.xml" rel="self" type="application/atom+xml" /><link href="https://fpkmatthi.github.io//" rel="alternate" type="text/html" /><updated>2019-09-13T18:27:48+00:00</updated><id>https://fpkmatthi.github.io//feed.xml</id><title type="html">Matthias Van De Velde</title><subtitle></subtitle><entry xml:lang="en"><title type="html">How I deploy my portfolio</title><link href="https://fpkmatthi.github.io//deployment/2019/05/01/HowIDeployIt.html" rel="alternate" type="text/html" title="How I deploy my portfolio" /><published>2019-05-01T00:00:00+00:00</published><updated>2019-05-01T00:00:00+00:00</updated><id>https://fpkmatthi.github.io//deployment/2019/05/01/HowIDeployIt</id><content type="html" xml:base="https://fpkmatthi.github.io//deployment/2019/05/01/HowIDeployIt.html">&lt;h1 id=&quot;how-i-deploy-my-portfolio&quot;&gt;How I deploy my portfolio&lt;/h1&gt;
+&lt;p&gt;My portfolio/blog started out as an assignment for the course i1Talent. The first generation was a from-scratch website, hosted on &lt;a href=&quot;https://m.do.co/c/f19502fb910e&quot;&gt;Digital Ocean&lt;/a&gt; and made using HTML, CSS, Bootstrap and some ES6. Maintaining this is doable but since it can be done a lot easier, why not do it easier?&lt;/p&gt;
+
+&lt;p&gt;Firstly, I switched to &lt;a href=&quot;https://pages.github.com/&quot;&gt;Github Pages&lt;/a&gt;, which is costless but keep in mind that it’s only for static websites. A VPS is much more suitable if you wish to host a dynamic website. Github Pages is where I discoverd &lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt;. Jekyll is a Ruby Gem that requires a &lt;strong&gt;full Ruby development environment&lt;/strong&gt;. I used Ubuntu but more guides for other operating systems can be found &lt;a href=&quot;https://jekyllrb.com/docs/installation/&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;
+&lt;code class=&quot;border rounded border-dark&quot;&gt;
+sudo apt-get install ruby-full build-essential zlib1g-dev
+echo '# Install Ruby Gems to ~/gems' &amp;gt;&amp;gt; ~/.bashrc
+echo 'export GEM_HOME=&quot;$HOME/gems&quot;' &amp;gt;&amp;gt; ~/.bashrc
+echo 'export PATH=&quot;$HOME/gems/bin:$PATH&quot;' &amp;gt;&amp;gt; ~/.bashrc
+source ~/.bashrc
+gem install jekyll bundler
+
+&lt;/code&gt;
+&lt;/pre&gt;
+
+&lt;p&gt;To start a new site&lt;/p&gt;
+
+&lt;pre&gt;
+&lt;code class=&quot;border rounded border-dark&quot;&gt;
+jekyll new myblog
+cd myblog
+bundle exec jekyll serve
+
+&lt;/code&gt;
+&lt;/pre&gt;
+
+&lt;p&gt;The output of the last command will tell you where the website is hosted locally. Usually this is &lt;strong&gt;http://localhost:4000/&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;I watched some &lt;a href=&quot;https://www.youtube.com/watch?v=T1itpPvFWHI&amp;amp;list=PLLAZ4kZ9dFpOPV5C5Ay0pHaa0RJFhcmcB&quot;&gt;YouTube tutorials&lt;/a&gt; and dove into the &lt;a href=&quot;https://jekyllrb.com/docs/&quot;&gt;Jekyll&lt;/a&gt; and &lt;a href=&quot;https://shopify.github.io/liquid/&quot;&gt;Liquid&lt;/a&gt; Documentation.
+Also the &lt;a href=&quot;https://github.com/parkr/vim-jekyll&quot;&gt;vim-jekyll&lt;/a&gt; plugin is something that might come in handy.&lt;/p&gt;
+
+&lt;p&gt;You can use existing templates where some are even hosted by Github which makes the whole proces even simpler. I chose not to and adapt my existing layout to be used as a template for Jekyll.&lt;/p&gt;
+
+&lt;p&gt;There is however a small drawback, Github only allows &lt;a href=&quot;https://pages.github.com/versions/&quot;&gt;a certain set of plugins and dependancies&lt;/a&gt;. If you want to make use of a plugin that is not hosted, you can use the method I’m about to explain in the next section.&lt;/p&gt;
+
+&lt;h2 id=&quot;using-continuous-integration-to-ease-your-pain&quot;&gt;Using Continuous Integration to ease your pain&lt;/h2&gt;
+
+&lt;p&gt;If you want to avoid the restrictions mentioned above, you can push only the &lt;strong&gt;site/&lt;/strong&gt; directory to github. This directory contains all the generated files after compiling everything locally. This is however a bit tedious and I would rather have both my build files and my project files on Github.&lt;/p&gt;
+
+&lt;p&gt;You’ll want to create an extra branch so you start with 2 branches, one for the build files and one for the project files. Make sure the master branch is used for the build files. On Github, change your default branch to the one containing your project files.
+&lt;img src=&quot;/assets/images/branchsettings.png&quot; alt=&quot;Imgur&quot; class=&quot;container&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Instead of having to compile it yourself, you can let a build server do all the work for you. In went with Travis CI since a Github pages is open and Travis CI is free for open source porjects.&lt;/p&gt;
+
+&lt;p&gt;To set up Travis CI, you will need a Github Personal Access Token and grant it the repo scope.
+Copy the token, you will need it later.
+Add rake to you Gemfile. This is my Gemfile as an example:&lt;/p&gt;
+
+&lt;pre&gt;
+&lt;code class=&quot;border rounded border-dark&quot;&gt;
+source &quot;https://rubygems.org&quot;
+ruby RUBY_VERSION
+
+gem &quot;rake&quot;, &quot;~&amp;gt; 12&quot;
+gem &quot;jekyll&quot;
+
+group :jekyll_plugins do
+  gem &quot;jekyll-feed&quot;, &quot;~&amp;gt; 0.6&quot;
+  gem &quot;jekyll-paginate&quot;, &quot;~&amp;gt; 1.1.0&quot;
+  gem &quot;jekyll-paginate-multiple&quot;, &quot;~&amp;gt; 0.1.0&quot;
+end
+
+&lt;/code&gt;
+&lt;/pre&gt;
+
+&lt;p&gt;You will want to exlude some files that are not supposed to end up in the branch of your build files, add this to your &lt;strong&gt;_config.yml&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;
+&lt;code class=&quot;border rounded border-dark&quot;&gt;
+exclude:
+  - vendor
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE
+  - README.md
+  - Rakefile
+
+&lt;/code&gt;
+&lt;/pre&gt;
+
+&lt;p&gt;Next, you will need a &lt;strong&gt;.travis.yml&lt;/strong&gt; file for the configuration of Travis CI, this is mine as an example:&lt;/p&gt;
+
+&lt;pre&gt;
+&lt;code class=&quot;border rounded border-dark&quot;&gt;
+language: ruby
+rvm:
+- 2.3.1
+install:
+- bundle install
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: _site
+  target_branch: master
+  on:
+    branch: develop
+
+&lt;/code&gt;
+&lt;/pre&gt;
+
+&lt;p&gt;The last file you will need to create is a Rakefile, which tells Travis what to do. Again mine as an example:&lt;/p&gt;
+
+&lt;pre&gt;
+&lt;code class=&quot;border rounded border-dark&quot;&gt;
+task :default do
+  puts &quot;Running CI tasks...&quot;
+  sh(&quot;JEKYLL_ENV=production bundle exec jekyll build&quot;)
+  puts &quot;Jekyll successfully built&quot;
+end
+
+&lt;/code&gt;
+&lt;/pre&gt;
+
+&lt;p&gt;On the dashboard of Travis CI, enable your repo and go to its settings.
+Make a new Environment Variable called &lt;strong&gt;GITHUB_TOKEN&lt;/strong&gt; and paste the Personal Access Token you copied earlier.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;You can now keep working in one branch without having to recompile it yourself and push it to master, each time you want publish your changes. Travis will automatically build all the files and push them on master
+&lt;img src=&quot;/assets/images/buildsuccess.png&quot; alt=&quot;Imgur&quot; class=&quot;container&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">How I deploy my portfolio My portfolio/blog started out as an assignment for the course i1Talent. The first generation was a from-scratch website, hosted on Digital Ocean and made using HTML, CSS, Bootstrap and some ES6. Maintaining this is doable but since it can be done a lot easier, why not do it easier? Firstly, I switched to Github Pages, which is costless but keep in mind that it’s only for static websites. A VPS is much more suitable if you wish to host a dynamic website. Github Pages is where I discoverd Jekyll. Jekyll is a Ruby Gem that requires a full Ruby development environment. I used Ubuntu but more guides for other operating systems can be found here sudo apt-get install ruby-full build-essential zlib1g-dev echo '# Install Ruby Gems to ~/gems' &amp;gt;&amp;gt; ~/.bashrc echo 'export GEM_HOME=&quot;$HOME/gems&quot;' &amp;gt;&amp;gt; ~/.bashrc echo 'export PATH=&quot;$HOME/gems/bin:$PATH&quot;' &amp;gt;&amp;gt; ~/.bashrc source ~/.bashrc gem install jekyll bundler To start a new site jekyll new myblog cd myblog bundle exec jekyll serve The output of the last command will tell you where the website is hosted locally. Usually this is http://localhost:4000/. I watched some YouTube tutorials and dove into the Jekyll and Liquid Documentation. Also the vim-jekyll plugin is something that might come in handy. You can use existing templates where some are even hosted by Github which makes the whole proces even simpler. I chose not to and adapt my existing layout to be used as a template for Jekyll. There is however a small drawback, Github only allows a certain set of plugins and dependancies. If you want to make use of a plugin that is not hosted, you can use the method I’m about to explain in the next section. Using Continuous Integration to ease your pain If you want to avoid the restrictions mentioned above, you can push only the site/ directory to github. This directory contains all the generated files after compiling everything locally. This is however a bit tedious and I would rather have both my build files and my project files on Github. You’ll want to create an extra branch so you start with 2 branches, one for the build files and one for the project files. Make sure the master branch is used for the build files. On Github, change your default branch to the one containing your project files. Instead of having to compile it yourself, you can let a build server do all the work for you. In went with Travis CI since a Github pages is open and Travis CI is free for open source porjects. To set up Travis CI, you will need a Github Personal Access Token and grant it the repo scope. Copy the token, you will need it later. Add rake to you Gemfile. This is my Gemfile as an example: source &quot;https://rubygems.org&quot; ruby RUBY_VERSION gem &quot;rake&quot;, &quot;~&amp;gt; 12&quot; gem &quot;jekyll&quot; group :jekyll_plugins do gem &quot;jekyll-feed&quot;, &quot;~&amp;gt; 0.6&quot; gem &quot;jekyll-paginate&quot;, &quot;~&amp;gt; 1.1.0&quot; gem &quot;jekyll-paginate-multiple&quot;, &quot;~&amp;gt; 0.1.0&quot; end You will want to exlude some files that are not supposed to end up in the branch of your build files, add this to your _config.yml exclude: - vendor - Gemfile - Gemfile.lock - LICENSE - README.md - Rakefile Next, you will need a .travis.yml file for the configuration of Travis CI, this is mine as an example: language: ruby rvm: - 2.3.1 install: - bundle install deploy: provider: pages skip_cleanup: true github_token: $GITHUB_TOKEN local_dir: _site target_branch: master on: branch: develop The last file you will need to create is a Rakefile, which tells Travis what to do. Again mine as an example: task :default do puts &quot;Running CI tasks...&quot; sh(&quot;JEKYLL_ENV=production bundle exec jekyll build&quot;) puts &quot;Jekyll successfully built&quot; end On the dashboard of Travis CI, enable your repo and go to its settings. Make a new Environment Variable called GITHUB_TOKEN and paste the Personal Access Token you copied earlier. Conclusion You can now keep working in one branch without having to recompile it yourself and push it to master, each time you want publish your changes. Travis will automatically build all the files and push them on master</summary></entry><entry xml:lang="en"><title type="html">i2Talent</title><link href="https://fpkmatthi.github.io//italent/2019/04/11/i2Talent.html" rel="alternate" type="text/html" title="i2Talent" /><published>2019-04-11T00:00:00+00:00</published><updated>2019-04-11T00:00:00+00:00</updated><id>https://fpkmatthi.github.io//italent/2019/04/11/i2Talent</id><content type="html" xml:base="https://fpkmatthi.github.io//italent/2019/04/11/i2Talent.html">&lt;section class=&quot;container pt-4 pb-4 pl-4&quot;&gt;
+  &lt;article&gt;
+    &lt;h3&gt;Personal Development&lt;/h3&gt;
+    &lt;h4&gt;
+      &lt;a href=&quot;https://www.123test.nl/competentietest/&quot; alt=&quot;link to disc-test.nl&quot;&gt;Competence test&lt;/a&gt;
+      &lt;i class=&quot;fas fa-link fa-xs&quot;&gt;&lt;/i&gt;
+    &lt;/h4&gt;
+  &lt;/article&gt;
+&lt;/section&gt;
+&lt;img src=&quot;/assets/images/competencetest.png&quot; alt=&quot;&quot;&gt;</content><author><name></name></author><summary type="html">Personal Development Competence test</summary></entry><entry xml:lang="nl"><title type="html">i2Talent</title><link href="https://fpkmatthi.github.io//italent/nl/2019/04/11/i2Talent.html" rel="alternate" type="text/html" title="i2Talent" /><published>2019-04-11T00:00:00+00:00</published><updated>2019-04-11T00:00:00+00:00</updated><id>https://fpkmatthi.github.io//italent/nl/2019/04/11/i2Talent</id><content type="html" xml:base="https://fpkmatthi.github.io//italent/nl/2019/04/11/i2Talent.html">&lt;section class=&quot;container pt-4 pb-4 pl-4&quot;&gt;
+  &lt;article&gt;
+    &lt;h3&gt;Persoonlijke Ontwikkeling&lt;/h3&gt;
+    &lt;h4&gt;
+      &lt;a href=&quot;https://www.123test.nl/competentietest/&quot; alt=&quot;link to disc-test.nl&quot;&gt;Competentie test&lt;/a&gt;
+      &lt;i class=&quot;fas fa-link fa-xs&quot;&gt;&lt;/i&gt;
+    &lt;/h4&gt;
+  &lt;/article&gt;
+&lt;/section&gt;
+&lt;img src=&quot;/assets/images/competencetest.png&quot; alt=&quot;&quot;&gt;</content><author><name></name></author><summary type="html">Persoonlijke Ontwikkeling Competentie test</summary></entry><entry xml:lang="en"><title type="html">i1Talent</title><link href="https://fpkmatthi.github.io//italent/2018/06/01/i1Talent.html" rel="alternate" type="text/html" title="i1Talent" /><published>2018-06-01T00:00:00+00:00</published><updated>2018-06-01T00:00:00+00:00</updated><id>https://fpkmatthi.github.io//italent/2018/06/01/i1Talent</id><content type="html" xml:base="https://fpkmatthi.github.io//italent/2018/06/01/i1Talent.html">&lt;!-- This whole series will be about personal development and ... --&gt;
+&lt;section class=&quot;container pt-4 pb-4 pl-4&quot;&gt;
+    &lt;article&gt;
+        &lt;h3&gt;Personal Development&lt;/h3&gt;
+        &lt;h4&gt;
+            &lt;a href=&quot;https://www.123test.nl/disc-test/&quot; alt=&quot;link to disc-test.nl&quot;&gt;DISC-test&lt;/a&gt;
+            &lt;i class=&quot;fas fa-link fa-xs&quot;&gt;&lt;/i&gt;
+        &lt;/h4&gt;
+    &lt;/article&gt;
+    &lt;article class=&quot;mt-5 container&quot;&gt;
+        &lt;canvas id=&quot;discTestPie&quot; class=&quot;mb-5&quot;&gt;&lt;/canvas&gt;
+        &lt;p&gt;The DISC model consists out of 4 temperaments(Dominance, Influence, Conscientiousness, Stability) and charts ones preferences, strong sides, communication and growth opportunities.&lt;/p&gt;
+        &lt;p&gt;Perks of dominance:&lt;/p&gt;
+        &lt;ul class=&quot;list-group&quot;&gt;
+            &lt;li class=&quot;list-group-item&quot;&gt;
+                Loving competition and challenges.
+            &lt;/li&gt;
+            &lt;li class=&quot;list-group-item&quot;&gt;
+                Goal-oriented and craves recognition for efforts.
+            &lt;/li&gt;
+            &lt;li class=&quot;list-group-item&quot;&gt;
+                Aiming high, wants to call the shots and is generally inventive and ingenious.
+            &lt;/li&gt;
+            &lt;li class=&quot;list-group-item&quot;&gt;
+                Mostly independent and individualistic.
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/article&gt;
+
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;hr class=&quot;featurette-divider&quot;&gt;
+    &lt;/div&gt;
+
+    &lt;article&gt;
+        &lt;h4&gt;
+            &lt;a href=&quot;https://www.123test.nl/enneagram/&quot; alt=&quot;link to enneagram-test.nl&quot;&gt;Enneagram test&lt;/a&gt;
+            &lt;i class=&quot;fas fa-link fa-xs&quot;&gt;&lt;/i&gt;
+        &lt;/h4&gt;
+    &lt;/article&gt;
+    &lt;article class=&quot;mt-5 container&quot;&gt;
+        &lt;p&gt;
+            The 2 types that stuck out the most were seller and perfectionist.
+            According to the legend, these 2 types mean the following:
+        &lt;/p&gt;
+        &lt;ul class=&quot;list-group&quot;&gt;
+            &lt;li class=&quot;list-group-item&quot;&gt;
+                &lt;h5&gt;Seller&lt;/h5&gt;
+                &lt;p&gt;
+                    The seller is someone who likes to score. He/she is an oppertunist and competitive.
+                    Hereby, he/she can seem confident or arrogant. The sellers knows how to get things done.
+                    He/she will only make the necessary efforts to achieve the desired result.
+                    According to the enneagram, the seller is driven by deceit.
+                &lt;/p&gt;
+            &lt;/li&gt;
+            &lt;li class=&quot;list-group-item&quot;&gt;
+                &lt;h5&gt;Perfectionist&lt;/h5&gt;
+                &lt;p&gt;
+                    The perfectionist has a lot of attention to detail.
+                    He/she likes to stick to the rules and feels responsible.
+                    In the eyes of others, the perfectionist can sound stubborn.
+                    He/she also has troubles with delegating tasks.
+                    According to the enneagram, the perfectionist is driven by rage.
+                    This results in passion and demandingness.
+                &lt;/p&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/article&gt;
+
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;hr class=&quot;featurette-divider&quot;&gt;
+    &lt;/div&gt;
+
+    &lt;article&gt;
+        &lt;h4&gt;
+            &lt;a href=&quot;https://www.123test.nl/jung-persoonlijkheidstest/&quot; alt=&quot;link to mbti-test.nl&quot;&gt;MBTI test&lt;/a&gt;
+            &lt;i class=&quot;fas fa-link fa-xs&quot;&gt;&lt;/i&gt;
+        &lt;/h4&gt;
+        &lt;article class=&quot;mt-5 row justify-content-center&quot;&gt;
+            &lt;canvas id=&quot;mbtiTestEnergyBar&quot; class=&quot;mb-5 col-md-6&quot;&gt;&lt;/canvas&gt;
+            &lt;canvas id=&quot;mbtiTestAttentionBar&quot; class=&quot;mb-5 col-md-6&quot;&gt;&lt;/canvas&gt;
+            &lt;canvas id=&quot;mbtiTestDecisionBar&quot; class=&quot;mb-5 col-md-6&quot;&gt;&lt;/canvas&gt;
+            &lt;canvas id=&quot;mbtiTestLivingBar&quot; class=&quot;mb-5 col-md-6&quot;&gt;&lt;/canvas&gt;
+        &lt;/article&gt;
+        &lt;h5&gt;Conclusion: INTJ(Introversion, Intuition, Thinking, Judging)&lt;/h5&gt;
+        &lt;p&gt;
+            From all 16 types, INTJ is the most independant one.
+            It's always on the lookout for new angles of approach, has a sharp mind and is quick of understanding.
+            INTJ types tend to have a lot of confidence and do not care too much about others.
+            They are at their best during activities or jobs where they can peacefully develop their ideas.
+        &lt;/p&gt;
+    &lt;/article&gt;
+&lt;/section&gt;</content><author><name></name></author><summary type="html">Personal Development DISC-test The DISC model consists out of 4 temperaments(Dominance, Influence, Conscientiousness, Stability) and charts ones preferences, strong sides, communication and growth opportunities. Perks of dominance: Loving competition and challenges. Goal-oriented and craves recognition for efforts. Aiming high, wants to call the shots and is generally inventive and ingenious. Mostly independent and individualistic.</summary></entry><entry xml:lang="nl"><title type="html">i1Talent</title><link href="https://fpkmatthi.github.io//italent/nl/2018/06/01/i1Talent.html" rel="alternate" type="text/html" title="i1Talent" /><published>2018-06-01T00:00:00+00:00</published><updated>2018-06-01T00:00:00+00:00</updated><id>https://fpkmatthi.github.io//italent/nl/2018/06/01/i1Talent</id><content type="html" xml:base="https://fpkmatthi.github.io//italent/nl/2018/06/01/i1Talent.html">&lt;!-- This whole series will be about personal development and ... --&gt;
+&lt;section class=&quot;container pt-4 pb-4 pl-4&quot;&gt;
+    &lt;article&gt;
+        &lt;h3&gt;Persoonlijke Ontwikkeling&lt;/h3&gt;
+        &lt;h4&gt;
+            &lt;a alt=&quot;link to disc-test.nl&quot; href=&quot;https://www.123test.nl/disc-test/&quot;&gt;DISC-test&lt;/a&gt;
+            &lt;i class=&quot;fas fa-link fa-xs&quot;&gt;&lt;/i&gt;
+        &lt;/h4&gt;
+    &lt;/article&gt;
+    &lt;article class=&quot;mt-5 container&quot;&gt;
+        &lt;canvas class=&quot;mb-5&quot; id=&quot;discTestPie&quot;&gt;&lt;/canvas&gt;
+        &lt;p&gt;Het DISC model bestaat uit 4 temperamenten(Dominant, Invloed, Conscentieus, Stabiel) en brengt je voorkeuren,
+            sterke punen, communicatie en groeikansen in kaart&lt;/p&gt;
+        &lt;p&gt;Voordelen van dominant:&lt;/p&gt;
+        &lt;ul class=&quot;list-group&quot;&gt;
+            &lt;li class=&quot;list-group-item&quot;&gt;
+                Houdt van competitie en uitdagingen.
+            &lt;/li&gt;
+            &lt;li class=&quot;list-group-item&quot;&gt;
+                Doelgericht en hunkert naar erkenning voor geleverde inspanningen.
+            &lt;/li&gt;
+            &lt;li class=&quot;list-group-item&quot;&gt;
+                De lat hoog leggen, het heft in handen nemen en is algemeen inventief en geniaal.
+            &lt;/li&gt;
+            &lt;li class=&quot;list-group-item&quot;&gt;
+                Meestal onafhankelijk en individualistisch.
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/article&gt;
+
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;hr class=&quot;featurette-divider&quot;&gt;
+    &lt;/div&gt;
+
+    &lt;article&gt;
+        &lt;h4&gt;
+            &lt;a alt=&quot;link to enneagram-test.nl&quot; href=&quot;https://www.123test.nl/enneagram/&quot;&gt;Enneagram test&lt;/a&gt;
+            &lt;i class=&quot;fas fa-link fa-xs&quot;&gt;&lt;/i&gt;
+        &lt;/h4&gt;
+    &lt;/article&gt;
+    &lt;article class=&quot;mt-5 container&quot;&gt;
+        &lt;p&gt;
+
+            De 2 soorten die het meest uitblonken waren verkoper en perfectionist.
+            Volgens de legende, betekenen deze 2 soorten het volgende:
+        &lt;/p&gt;
+        &lt;ul class=&quot;list-group&quot;&gt;
+            &lt;li class=&quot;list-group-item&quot;&gt;
+                &lt;h5&gt;Seller&lt;/h5&gt;
+                &lt;p&gt;
+                    De verkoper is iemand die graag scoort. Hij/zij is oppertunistisch en competitief.
+                    Hierdoor kan hij/zij zelfverzekerd of arrogant overkomen. De verkoper weet dingen voor
+                    elkaar te krijgen. Hij/zij zal alleen de inspanningen leveren die nodig zijn om het gewenste
+                    resultaat te behalen. Volgens het enneagram wordt de verkoper gedreven door bedrog.
+                &lt;/p&gt;
+            &lt;/li&gt;
+            &lt;li class=&quot;list-group-item&quot;&gt;
+                &lt;h5&gt;Perfectionist&lt;/h5&gt;
+                &lt;p&gt;
+                    De perfectionist heeft veel oog voor detail. In de regel houdt de perfectionist zich aan de
+                    afspraken en voelt zichzelf veelal verantwoordelijk. In de ogen van anderen kan de perfectionist als
+                    eigenwijs overkomen. Ook heeft de perfectionist veel moeite met het delegeren van taken
+                    of bevoegdheden. Volgens het enneagram wordt de perfectionist gedreven door woede.
+                    Dit resulteert in gedrevenheid en veeleisendheid.
+                &lt;/p&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/article&gt;
+
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;hr class=&quot;featurette-divider&quot;&gt;
+    &lt;/div&gt;
+
+    &lt;article&gt;
+        &lt;h4&gt;
+            &lt;a alt=&quot;link to mbti-test.nl&quot; href=&quot;https://www.123test.nl/jung-persoonlijkheidstest/&quot;&gt;MBTI test&lt;/a&gt;
+            &lt;i class=&quot;fas fa-link fa-xs&quot;&gt;&lt;/i&gt;
+        &lt;/h4&gt;
+        &lt;article class=&quot;mt-5 row justify-content-center&quot;&gt;
+            &lt;canvas class=&quot;mb-5 col-md-6&quot; id=&quot;mbtiTestEnergyBar&quot;&gt;&lt;/canvas&gt;
+            &lt;canvas class=&quot;mb-5 col-md-6&quot; id=&quot;mbtiTestAttentionBar&quot;&gt;&lt;/canvas&gt;
+            &lt;canvas class=&quot;mb-5 col-md-6&quot; id=&quot;mbtiTestDecisionBar&quot;&gt;&lt;/canvas&gt;
+            &lt;canvas class=&quot;mb-5 col-md-6&quot; id=&quot;mbtiTestLivingBar&quot;&gt;&lt;/canvas&gt;
+        &lt;/article&gt;
+        &lt;h5&gt;Conclusion: INTJ(Introvert, Inituïtie, Denken, Oordelen)&lt;/h5&gt;
+        &lt;p&gt;
+            Van alle 16 typen is INTJ de meest onafhankelijke.
+            Het is altijd op zoek naar nieuwe invalshoeken, heeft een scherpe geest en is snel van begrip.
+            INTJ-typen hebben meestal veel zelfvertrouwen en geven niet te veel om anderen.
+            Ze zijn op hun mooist tijdens activiteiten of banen waar ze op vreedzame wijze hun ideeën kunnen ontwikkelen.
+        &lt;/p&gt;
+    &lt;/article&gt;
+&lt;/section&gt;</content><author><name></name></author><summary type="html">Persoonlijke Ontwikkeling DISC-test Het DISC model bestaat uit 4 temperamenten(Dominant, Invloed, Conscentieus, Stabiel) en brengt je voorkeuren, sterke punen, communicatie en groeikansen in kaart Voordelen van dominant: Houdt van competitie en uitdagingen. Doelgericht en hunkert naar erkenning voor geleverde inspanningen. De lat hoog leggen, het heft in handen nemen en is algemeen inventief en geniaal. Meestal onafhankelijk en individualistisch.</summary></entry></feed>

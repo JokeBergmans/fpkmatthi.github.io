@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">    
+
+    <link rel="stylesheet" href="/assets/css/reset.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" 
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+        <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/hamburger.css">
+
+    <title>How I deploy my portfolio</title>
+</head>
+
+<body>
+
+    <header>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+        <a class="navbar-brand text-light" href="index.html">Matthias Van De Velde</a>
+        <button class="navbar-toggler border-0 hamburger hamburger--spring" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <!-- <span class="navbar-toggler-icon"></span> -->
+            <!-- <i class="fas fa-bars fa-lg"></i> -->
+            <span class="hamburger-box">
+                <span class="hamburger-inner"></span>
+            </span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                
+
+                
+                    
+                        <li class="nav-item">
+                    
+
+                    
+                        <a class="nav-link" href="/index.html">Home</a>
+                    
+                    </li>
+                
+                    
+                        <li class="nav-item">
+                    
+
+                    
+                        <a class="nav-link" href="/about.html">About</a>
+                    
+                    </li>
+                
+                    
+                        <li class="nav-item">
+                    
+
+                    
+                        <a class="nav-link" href="/posts/index.html">Posts</a>
+                    
+                    </li>
+                
+                    
+                        <li class="nav-item">
+                    
+
+                    
+                        <a class="nav-link" href="/links.html">Links</a>
+                    
+                    </li>
+                
+                    
+                        <li class="nav-item">
+                    
+
+                    
+                        <a class="nav-link" href="/contact.html">Contact</a>
+                    
+                    </li>
+                
+            </ul>
+        </div>
+    </nav>
+</header>
+
+    <main>
+        <div class="parallax mb-5" id="p1">
+    <div class="page-info text-center">
+        <img src="/assets/images/pizza.png" class="mt-5 image-fluid" alt="pizza steve">
+        <!-- <p class="mt-5">Matthias
+            <span>Van De Velde</span>
+        </p> -->
+        <!-- <div class="info-buttons">
+            <a href="projects.html" class="btn btn-warning" role="button" aria-pressed="false">Projects</a>
+            <a href="contact.html" class="btn btn-warning" role="button" aria-pressed="false">Contact</a>
+        </div> -->
+    </div>
+</div>
+        <div class="container mb-3">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+
+            <h1 id="how-i-deploy-my-portfolio">How I deploy my portfolio</h1>
+<p>My portfolio/blog started out as an assignment for the course i1Talent. The first generation was a from-scratch website, hosted on <a href="https://m.do.co/c/f19502fb910e">Digital Ocean</a> and made using HTML, CSS, Bootstrap and some ES6. Maintaining this is doable but since it can be done a lot easier, why not do it easier?</p>
+
+<p>Firstly, I switched to <a href="https://pages.github.com/">Github Pages</a>, which is costless but keep in mind that it’s only for static websites. A VPS is much more suitable if you wish to host a dynamic website. Github Pages is where I discoverd <a href="https://jekyllrb.com/">Jekyll</a>. Jekyll is a Ruby Gem that requires a <strong>full Ruby development environment</strong>. I used Ubuntu but more guides for other operating systems can be found <a href="https://jekyllrb.com/docs/installation/">here</a></p>
+
+<pre>
+<code class="border rounded border-dark">
+sudo apt-get install ruby-full build-essential zlib1g-dev
+echo '# Install Ruby Gems to ~/gems' &gt;&gt; ~/.bashrc
+echo 'export GEM_HOME="$HOME/gems"' &gt;&gt; ~/.bashrc
+echo 'export PATH="$HOME/gems/bin:$PATH"' &gt;&gt; ~/.bashrc
+source ~/.bashrc
+gem install jekyll bundler
+
+</code>
+</pre>
+
+<p>To start a new site</p>
+
+<pre>
+<code class="border rounded border-dark">
+jekyll new myblog
+cd myblog
+bundle exec jekyll serve
+
+</code>
+</pre>
+
+<p>The output of the last command will tell you where the website is hosted locally. Usually this is <strong>http://localhost:4000/</strong>.</p>
+
+<p>I watched some <a href="https://www.youtube.com/watch?v=T1itpPvFWHI&amp;list=PLLAZ4kZ9dFpOPV5C5Ay0pHaa0RJFhcmcB">YouTube tutorials</a> and dove into the <a href="https://jekyllrb.com/docs/">Jekyll</a> and <a href="https://shopify.github.io/liquid/">Liquid</a> Documentation.
+Also the <a href="https://github.com/parkr/vim-jekyll">vim-jekyll</a> plugin is something that might come in handy.</p>
+
+<p>You can use existing templates where some are even hosted by Github which makes the whole proces even simpler. I chose not to and adapt my existing layout to be used as a template for Jekyll.</p>
+
+<p>There is however a small drawback, Github only allows <a href="https://pages.github.com/versions/">a certain set of plugins and dependancies</a>. If you want to make use of a plugin that is not hosted, you can use the method I’m about to explain in the next section.</p>
+
+<h2 id="using-continuous-integration-to-ease-your-pain">Using Continuous Integration to ease your pain</h2>
+
+<p>If you want to avoid the restrictions mentioned above, you can push only the <strong>site/</strong> directory to github. This directory contains all the generated files after compiling everything locally. This is however a bit tedious and I would rather have both my build files and my project files on Github.</p>
+
+<p>You’ll want to create an extra branch so you start with 2 branches, one for the build files and one for the project files. Make sure the master branch is used for the build files. On Github, change your default branch to the one containing your project files.
+<img src="/assets/images/branchsettings.png" alt="Imgur" class="container" /></p>
+
+<p>Instead of having to compile it yourself, you can let a build server do all the work for you. In went with Travis CI since a Github pages is open and Travis CI is free for open source porjects.</p>
+
+<p>To set up Travis CI, you will need a Github Personal Access Token and grant it the repo scope.
+Copy the token, you will need it later.
+Add rake to you Gemfile. This is my Gemfile as an example:</p>
+
+<pre>
+<code class="border rounded border-dark">
+source "https://rubygems.org"
+ruby RUBY_VERSION
+
+gem "rake", "~&gt; 12"
+gem "jekyll"
+
+group :jekyll_plugins do
+  gem "jekyll-feed", "~&gt; 0.6"
+  gem "jekyll-paginate", "~&gt; 1.1.0"
+  gem "jekyll-paginate-multiple", "~&gt; 0.1.0"
+end
+
+</code>
+</pre>
+
+<p>You will want to exlude some files that are not supposed to end up in the branch of your build files, add this to your <strong>_config.yml</strong></p>
+
+<pre>
+<code class="border rounded border-dark">
+exclude:
+  - vendor
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE
+  - README.md
+  - Rakefile
+
+</code>
+</pre>
+
+<p>Next, you will need a <strong>.travis.yml</strong> file for the configuration of Travis CI, this is mine as an example:</p>
+
+<pre>
+<code class="border rounded border-dark">
+language: ruby
+rvm:
+- 2.3.1
+install:
+- bundle install
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: _site
+  target_branch: master
+  on:
+    branch: develop
+
+</code>
+</pre>
+
+<p>The last file you will need to create is a Rakefile, which tells Travis what to do. Again mine as an example:</p>
+
+<pre>
+<code class="border rounded border-dark">
+task :default do
+  puts "Running CI tasks..."
+  sh("JEKYLL_ENV=production bundle exec jekyll build")
+  puts "Jekyll successfully built"
+end
+
+</code>
+</pre>
+
+<p>On the dashboard of Travis CI, enable your repo and go to its settings.
+Make a new Environment Variable called <strong>GITHUB_TOKEN</strong> and paste the Personal Access Token you copied earlier.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>You can now keep working in one branch without having to recompile it yourself and push it to master, each time you want publish your changes. Travis will automatically build all the files and push them on master
+<img src="/assets/images/buildsuccess.png" alt="Imgur" class="container" /></p>
+
+
+            <hr>
+
+            <div class="clearfix">
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+
+                
+                
+                
+                
+                <a class="btn btn-primary float-left"
+                    href="/italent/2019/04/11/i2Talent.html" data-toggle="tooltip"
+                    data-placement="top" title="i2Talent">&larr; Previous<span
+                        class="d-none d-md-inline">
+                        Post</span></a>
+                
+
+                <!-- 
+                <a class="btn btn-primary float-left"
+                    href="/italent/nl/2019/04/11/i2Talent.html" data-toggle="tooltip"
+                    data-placement="top" title="i2Talent">&larr; Previous<span
+                        class="d-none d-md-inline">
+                        Post</span></a>
+                
+
+                 -->
+
+            </div>
+
+        </div>
+    </div>
+</div>
+    </main>
+
+    <footer class="container-fluid text-center text-white mt-4 pt-4 pb-3">
+    <p>&copy; Matthias Van De Velde <span id="copyrightyear"></span></p>
+    <a href="https://github.com/fpkmatthi" alt="link to github account">
+        <i class="fa fa-github fa-2x" aria-hidden="true"></i>
+    </a>
+    <a href="contact.html" alt="link to contact page">
+        <i class="fa fa-envelope fa-2x" aria-hidden="true"></i>
+    </a>
+    <a href="https://www.linkedin.com/in/matthias-van-de-velde-063171163/" alt="link to LinkedIn account">
+        <i class="fa fa-linkedin-square fa-2x" aria-hidden="true"></i>
+    </a>
+
+    
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+</footer>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+<script src="https://use.fontawesome.com/a60f6c9d4e.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="/assets/parallax-1.5.0/parallax.min.js"></script>
+<script src="/assets/js/parallaxAnimation.js"></script>
+<script src="/assets/js/timeline.js"></script>
+<script src="/assets/js/navbar.js"></script>
+<script src="/assets/js/menuButton.js"></script>
+<script src="/assets/js/ageCalculator.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+<script src="/assets/js/chart.js"></script>
+<script src="/assets/js/redirect.js"></script>
+<script src="/assets/js/copyrightCalculator.js"></script>
+
+</body>
+
+</html>
